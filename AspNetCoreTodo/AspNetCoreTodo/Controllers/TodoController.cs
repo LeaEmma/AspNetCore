@@ -15,21 +15,36 @@ namespace AspNetCoreTodo.Controllers
         {
             _todoItemService = todoItemService;
         }
-        
+
         public async Task<IActionResult> Index()
         {
-        //	Get	to-do	items	from	database
+            //	Get	to-do	items	from	database
             var items = await _todoItemService.GetIncompleteItemsAsync();
 
-        //	Put	items	into	a	model
+            //	Put	items	into	a	model
             var model = new TodoViewModel()
             {
-            Items = items
+                Items = items
             };
 
-        //	Render	view	using	the	model	
+            //	Render	view	using	the	model	
             return View(model);
         }
+        
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddItem(TodoItem newItem)
+        {
+            if (!ModelState.IsValid) { 
+                return RedirectToAction("Index"); 
+                }
+
+            var successful = await _todoItemService.AddItemAsync(newItem); 
+            if (!successful) { 
+                return BadRequest("Could	not	add	item."); 
+                }
+            return RedirectToAction("Index");
+        }
+
     }
 
 }
