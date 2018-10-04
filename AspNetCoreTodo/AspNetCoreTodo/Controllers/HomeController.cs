@@ -17,7 +17,7 @@ namespace AspNetCoreTodo.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your applicaxtion <br> description page.";
+            ViewData["Message"] = "Your application description page.";
 
             return View();
         }
