@@ -2,36 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using AspNetCoreTodo.Services;
 using AspNetCoreTodo.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-
+using AspNetCoreTodo.Services;
+using Microsoft.AspNetCore.Mvc;
 namespace AspNetCoreTodo.Controllers
 {
-    [Authorize]
     public class TodoController : Controller
     {
         private readonly ITodoItemService _todoItemService;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public TodoController(ITodoItemService todoItemService, UserManager<ApplicationUser> userManager)
+        public TodoController(ITodoItemService todoItemService)
         {
             _todoItemService = todoItemService;
-            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null) return Challenge();
-
-            var items = await _todoItemService.GetIncompleteItemsAsync(currentUser);
-            
+            // Get to-do items from database
+            var items = await _todoItemService.GetIncompleteItemsAsync();
+            // Put items into a model
             var model = new TodoViewModel()
             {
                 Items = items
             };
 
+            // Pass the view to a model and render
             return View(model);
         }
 
@@ -43,18 +36,14 @@ namespace AspNetCoreTodo.Controllers
                 return RedirectToAction("Index");
             }
 
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null) return Challenge();
-                
-            var successful = await _todoItemService.AddItemAsync(newItem, currentUser);
-
+            var successful = await _todoItemService.AddItemAsync(newItem);
             if (!successful)
             {
                 return BadRequest("Could not add item.");
             }
+
             return RedirectToAction("Index");
         }
-
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkDone(Guid id)
         {
@@ -63,18 +52,13 @@ namespace AspNetCoreTodo.Controllers
                 return RedirectToAction("Index");
             }
 
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null) return Challenge();
-
-            var successful = await _todoItemService.MarkDoneAsync(id,currentUser);
-            
+            var successful = await _todoItemService.MarkDoneAsync(id);
             if (!successful)
             {
                 return BadRequest("Could not mark item as done.");
             }
-            
+
             return RedirectToAction("Index");
         }
-
     }
 }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>aspnet-AspNetCoreTodo-988D370C-58A0-48BF-BF03-76968EAC2C46</UserSecretsId>
+    <UserSecretsId>aspnet-AspNetCoreTodo-F5D2AB8C-02D4-4FAE-8812-5F4A5C1ADA49</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +12,8 @@
   <ItemGroup>
     <PackageReference Include="Humanizer" Version="2.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.3" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
